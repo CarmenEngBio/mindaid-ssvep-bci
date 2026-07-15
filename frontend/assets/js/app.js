@@ -1,0 +1,1 @@
+// BCI app.js --> Initialises frontend
