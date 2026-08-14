@@ -1,1 +1,249 @@
 /* BCI styles.css --> Models the index UI appearance */
+
+/* styles.css — SSVEP Assistive BCI */
+ 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  background: #1a1a1a;
+  color: #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1.5rem;
+}
+ 
+h1 {
+  font-size: 1.5rem;
+  color: #aaa;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  margin-top: 1rem;
+}
+ 
+#status {
+  font-size: 1rem;
+  color: #888;
+  transition: color 0.3s;
+}
+ 
+#status.ok {
+  color: #6abf69;
+}
+ 
+/* KEYPAD — 4 celdas en fila */
+#keypad {
+  display: flex;
+  gap: 3cm;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+ 
+/* CELDAS GRANDES */
+.key {
+  width: 8cm;
+  height: 8cm;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5cm;
+  font-weight: 700;
+  color: #000;
+  user-select: none;
+  cursor: default;
+  /*transition: all 0.15s ease;*/
+  background: #0a0a0a;
+}
+ 
+.key .emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+ 
+.key .label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+ 
+/* FLICKERING */
+.key.on {
+  background: #ffffff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  filter: brightness(1.2) saturate(0.5); /*← Uniformiza color */
+}
+ 
+.key.off {
+  background: #0a0a0a;
+  color: #666;
+  filter: brightness(0.7) saturate(0.5);  /*← Uniformiza apagado */
+}
+ 
+/* SELECCIONADA (✅ CORRECTO) */
+.key.selected {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  color: #ffffff;
+  box-shadow: 0 0 40px rgba(52, 211, 153, 0.8);
+}
+ 
+/* ERROR (❌ INCORRECTO) */
+.key.error {
+  background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
+  color: #ffffff;
+  box-shadow: 0 0 40px rgba(255, 107, 107, 0.8);
+}
+ 
+#phase-label {
+  font-size: 1rem;
+  color: #6abf69;
+  min-height: 1.5em;
+  text-align: center;
+}
+ 
+/* PANEL DE CONTROL */
+#test-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+ 
+#test-panel button {
+  background: #2e2e2e;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #ccc;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+ 
+#test-panel button:hover:not(:disabled) {
+  background: #383838;
+  border-color: #666;
+  transform: translateY(-2px);
+}
+ 
+#test-panel button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+ 
+#timer {
+  font-size: 1rem;
+  color: #e6a817;
+  min-height: 1.5em;
+  font-weight: 600;
+}
+ 
+#rec-filename {
+  font-size: 0.8rem;
+  color: #555;
+  word-break: break-all;
+  max-width: 600px;
+  text-align: center;
+}
+ 
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  #keypad {
+    gap: 1.5cm;
+  }
+ 
+  .key {
+    width: 7cm;
+    height: 7cm;
+  }
+ 
+  .key .emoji {
+    font-size: 2.8rem;
+  }
+ 
+  .key .label {
+    font-size: 0.7rem;
+  }
+ 
+  h1 {
+    font-size: 1.3rem;
+  }
+}
+/*  Modal of instructions */
+#modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+ 
+#modal {
+  background: #222;
+  border: 1px solid #3a3a3a;
+  border-radius: 10px;
+  padding: 2rem 2.2rem;
+  max-width: 420px;
+  width: 90%;
+}
+ 
+#modal h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ccc;
+  margin-bottom: 1.2rem;
+  letter-spacing: .05em;
+}
+ 
+#modal ol {
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+ 
+#modal li {
+  font-size: .83rem;
+  color: #999;
+  line-height: 1.5;
+}
+ 
+#modal strong { color: #ccc; font-weight: 600; }
+ 
+.modal-note {
+  margin-top: 1.2rem;
+  font-size: .75rem;
+  color: #666;
+  line-height: 1.5;
+}
+ 
+#modal-close {
+  margin-top: 1.4rem;
+  width: 100%;
+  padding: .65rem;
+  background: #2e2e2e;
+  border: 1px solid #444;
+  border-radius: 7px;
+  color: #ccc;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+ 
+#modal-close:hover {
+  background: #383838;
+  border-color: #666;
+}

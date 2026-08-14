@@ -1,2 +1,87 @@
 // BCI websocket.js
 // WebSocket communication between browser and server
+ 
+var WS_URL = 'ws://localhost:8765';
+var RETRY_MS = 2000;
+var socket = null;
+ 
+function connect() {
+  socket = new WebSocket(WS_URL);
+ 
+  socket.onopen = function () {
+    setConnectionStatus('connected');
+  };
+ 
+  socket.onclose = function () {
+    setConnectionStatus('disconnected');
+    socket = null;
+    setTimeout(connect, RETRY_MS);
+  };
+ 
+  socket.onerror = function () {
+    setConnectionStatus('disconnected');
+  };
+ 
+  socket.onmessage = function (e) {
+    var msg;
+    try {
+      msg = JSON.parse(e.data);
+    } catch (err) {
+      console.error('[WebSocket] Bad message:', err);
+      return;
+    }
+ 
+    switch (msg.type) {
+      case 'block_started': handleBlockStarted(msg); break;
+      case 'block_result':  handleBlockResult(msg);  break;
+      case 'session_ended': handleSessionEnded(msg); break;
+      case 'status':        /* periodic heartbeat, no UI action */ break; /*?*/
+    }
+  };
+}
+ 
+function handleBlockStarted(msg) {
+  // Tell the user which cell to gaze at. All cells keep flickering.
+  showMessage(msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + ' Hz)', 'info');
+ 
+  if (msg.file) {
+    document.getElementById('rec-filename').textContent = 'Recording: ' + msg.file;
+  }
+ 
+  document.getElementById('btn-test').style.display = 'none';
+  startCountdown(msg.duration);
+  clearCellSelection();
+}
+ 
+function handleBlockResult(msg) {
+  if (msg.correct) {
+    // Mark the detected cell green 
+    var cell = document.getElementById('cell-' + msg.cell_id);
+    if (cell) cell.classList.add('selected');
+    showMessage(
+      '✅ ' + msg.emoji + ' ' + msg.label + ' — corr ' + msg.correlation.toFixed(4),
+      'success'
+    );
+  }
+}
+ 
+function handleSessionEnded(msg) {
+  stopCountdown();
+  clearCellSelection();
+  showMessage(
+    '✓ Finished session — accuracy: ' + msg.correct + '/' + msg.total +
+    ' (' + msg.accuracy + '%)',
+    'success'
+  );
+ 
+  var btn = document.getElementById('btn-test');
+  btn.style.display = 'block';
+  btn.disabled = false;
+}
+ 
+// Connect once the DOM is ready.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', connect);
+} else {
+  connect();
+}

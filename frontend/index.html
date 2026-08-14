@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP Assistive BCI</title>
+  <link rel="stylesheet" href="./assets/css/styles.css"/>
+</head>
+<body>
+ 
+  <!-- MENU -->
+  <div id="modal-overlay">
+    <div id="modal">
+      <h2>Instructions</h2>
+      <ol>
+        <li>Sit down comfortable in front of the screen please, <strong>around 40-60 cm</strong> of distance.</li>
+        <li>Each target cell will flicker or blink at a certain frequency value <em>(8.57-15 Hz)</em>.</li>
+        <li><strong>Focus your sight</strong> on the desired functional need.</li>
+        <li>Mantain your sight fixed to observe that the symbol cell displayed is highlighted in green color during 
+            the recording.</li>
+        <li>If the selection is incorrect, just keep gazing at the target cell from the screen monitor.</li>
+        <li>If you have completed the recording target sequence, indicate it to the <strong>healthcare supporter</strong>.</li>
+      </ol>
+      <p class="modal-note"> <strong>WARNING</strong>: If you experience dizzyness, itchy eyes, strong headaches or you are 
+        uncomfortable at some point, close your eyes and rest please.</p>
+      <button id="modal-close" onclick="document.getElementById('modal-overlay').style.display='none'">
+        Got it! — Begin
+      </button>
+    </div>
+  </div>
+ 
+  <h1>SSVEP Assistive BCI</h1>
+ 
+  <div id="status">● Connecting to server ...</div>
+ 
+  <div id="keypad">
+    <div class="key off" id="cell-1" data-key="1" data-freq="8.57">
+      <div class="emoji">🍽️</div>
+      <div class="label">Eat</div>
+    </div>
+    <div class="key off" id="cell-2" data-key="2" data-freq="10.0">
+      <div class="emoji">❄️</div>
+      <div class="label">Cold</div>
+    </div>
+    <div class="key off" id="cell-3" data-key="3" data-freq="12.0">
+      <div class="emoji">📞</div>
+      <div class="label">SOS</div>
+    </div>
+    <div class="key off" id="cell-4" data-key="4" data-freq="15.0">
+      <div class="emoji">🚽</div>
+      <div class="label">WC</div>
+    </div>
+  </div>
+ 
+  <div id="phase-label">—</div>
+ 
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Start Session</button>
+    <div id="timer"></div>
+  </div>
+ 
+  <div id="rec-filename"></div>
+ 
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/websocket.js"></script>
+  <script src="./assets/js/flicker.js"></script>
+  <script src="./assets/js/app.js"></script>
+ 
+</body>
+</html>
