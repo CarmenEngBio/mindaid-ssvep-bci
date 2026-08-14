@@ -23,7 +23,7 @@ WINDOW     = FS * WINDOW_SEC
 # Session target cell
 # The online server runs one cell per session
 # To set which symbol the user is asked to gaze at this is changed to record every symbol.
-TARGET_CELL = 1
+TARGET_CELL = 4
 
 # Assistive vital cells with linked stimulus frequencies
 CELLS = {
