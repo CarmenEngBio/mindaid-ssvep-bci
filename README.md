@@ -6,6 +6,4 @@ A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP
 
 - SSVEP stimulation interface
 - EEG processing
-- PSDA analysis
 - Canonical Correlation Analysis (CCA)
-- Performance evaluation
