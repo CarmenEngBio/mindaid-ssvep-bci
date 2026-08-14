@@ -59,7 +59,7 @@ function handleBlockResult(msg) {
     var cell = document.getElementById('cell-' + msg.cell_id);
     if (cell) cell.classList.add('selected');
     showMessage(
-      '✅ ' + msg.emoji + ' ' + msg.label + ' - corr ' + msg.correlation.toFixed(4),
+      '✅ ' + msg.emoji + ' ' + msg.label + ' - Corr: ' + msg.correlation.toFixed(4),
       'success'
     );
   }
