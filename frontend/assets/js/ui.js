@@ -17,6 +17,7 @@ function setConnectionStatus(state) {
 function clearCellSelection() {
   document.querySelectorAll('.key').forEach(cell => {
     cell.classList.remove('selected', 'error');
+    cell.style.backgroundColor = '';
   });
 }
  

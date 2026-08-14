@@ -55,13 +55,20 @@ function handleBlockStarted(msg) {
  
 function handleBlockResult(msg) {
   if (msg.correct) {
-    // Mark the detected cell green 
-    var cell = document.getElementById('cell-' + msg.cell_id);
+    // Clear previous highlights
+  clearCellSelection();
+
+  var cell = document.getElementById('cell-' + msg.cell_id);
+
+  if (msg.correct) {
+    // Mark the detected cell green
     if (cell) cell.classList.add('selected');
+
     showMessage(
       '✅ ' + msg.emoji + ' ' + msg.label + ' - Corr: ' + msg.correlation.toFixed(4),
       'success'
     );
+  }
   }
 }
  
