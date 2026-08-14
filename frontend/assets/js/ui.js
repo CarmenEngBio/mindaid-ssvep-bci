@@ -9,7 +9,7 @@ function setConnectionStatus(state) {
     el.textContent = '● Connected to server';
     el.style.color = '#51cf66';
   } else {
-    el.textContent = '● Disconnected — retrying...';
+    el.textContent = '● Disconnected - reattempting...';
     el.style.color = '#ff6b6b';
   }
 }
