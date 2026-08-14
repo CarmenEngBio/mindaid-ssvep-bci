@@ -45,7 +45,7 @@ function handleBlockStarted(msg) {
   showMessage(msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + ' Hz)', 'info');
  
   if (msg.file) {
-    document.getElementById('rec-filename').textContent = 'Recording: ' + msg.file;
+    document.getElementById('rec-filename').textContent = 'Recorded at: ' + msg.file;
   }
  
   document.getElementById('btn-test').style.display = 'none';
@@ -59,7 +59,7 @@ function handleBlockResult(msg) {
     var cell = document.getElementById('cell-' + msg.cell_id);
     if (cell) cell.classList.add('selected');
     showMessage(
-      '✅ ' + msg.emoji + ' ' + msg.label + ' — corr ' + msg.correlation.toFixed(4),
+      '✅ ' + msg.emoji + ' ' + msg.label + ' - corr ' + msg.correlation.toFixed(4),
       'success'
     );
   }
@@ -69,7 +69,7 @@ function handleSessionEnded(msg) {
   stopCountdown();
   clearCellSelection();
   showMessage(
-    '✓ Finished session — accuracy: ' + msg.correct + '/' + msg.total +
+    '✓ Finished session - Accuracy: ' + msg.correct + '/' + msg.total +
     ' (' + msg.accuracy + '%)',
     'success'
   );
