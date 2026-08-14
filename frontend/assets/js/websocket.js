@@ -52,10 +52,9 @@ function handleBlockStarted(msg) {
   startCountdown(msg.duration);
   clearCellSelection();
 }
- 
+
 function handleBlockResult(msg) {
-  if (msg.correct) {
-    // Clear previous highlights
+  // Clear any previous selection
   clearCellSelection();
 
   var cell = document.getElementById('cell-' + msg.cell_id);
@@ -65,10 +64,10 @@ function handleBlockResult(msg) {
     if (cell) cell.classList.add('selected');
 
     showMessage(
-      '✅ ' + msg.emoji + ' ' + msg.label + ' - Corr: ' + msg.correlation.toFixed(4),
+      '✅ ' + msg.emoji + ' ' + msg.label + ' - Corr: ' +
+      msg.correlation.toFixed(4),
       'success'
     );
-  }
   }
 }
  
