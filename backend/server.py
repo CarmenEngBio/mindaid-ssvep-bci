@@ -185,7 +185,7 @@ async def main():
     for cid, info in sorted(CELLS.items()):
         marker = "   target!" if cid == TARGET_CELL else ""
         print(f"    {cid}. {info['emoji']} {info['label']:6} → {info['freq']} Hz{marker}")
-    print(f"  Trial duration: {TRIAL_SEC} s")
+    print(f"  Trial duration: {TRIAL_SEC}s")
     print("  Connected to Cyton hardware.")
     print("=" * 70)
  
