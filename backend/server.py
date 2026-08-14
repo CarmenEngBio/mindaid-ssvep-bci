@@ -178,11 +178,12 @@ async def main():
     print("=" * 70)
     print("  SSVEP Online Assistive BCI")
     print("=" * 70)
-    print(f"  One 40 s block per session: user gazes at the {TARGET_CELL} symbol.")
+    print(f"  One 40 s block per session: user gazes at the target symbol.")
     print("  Classification: CCA winner on every 4s window.")
-    print("  Symbols:")
+    print("  Frequencies:")
+
     for cid, info in sorted(CELLS.items()):
-        marker = "   <-- target" if cid == TARGET_CELL else ""
+        marker = "   target!" if cid == TARGET_CELL else ""
         print(f"    {cid}. {info['emoji']} {info['label']:6} -> {info['freq']} Hz{marker}")
     print(f"  Trial duration: {TRIAL_SEC} s")
     print("  Connected to Cyton hardware.")
