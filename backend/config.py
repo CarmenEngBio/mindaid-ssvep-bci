@@ -9,7 +9,7 @@
 SERIAL_PORT ="COM5" # Cyton used port
 # Cyton serial port (Windows: Device Manager -> Ports -> COMx)
 
-USE_SYNTHETIC_BOARD = False   # True -> BrainFlow synthetic board (no hardware, for testing full pipeline)
+USE_SYNTHETIC_BOARD = True   # True -> BrainFlow synthetic board (no hardware, for testing full pipeline)
 
 # Acquisition
 FS = 250 # Sampling frequency (Hz)
