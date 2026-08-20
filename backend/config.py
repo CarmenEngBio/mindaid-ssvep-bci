@@ -9,7 +9,17 @@
 SERIAL_PORT ="COM5" # Cyton used port
 # Cyton serial port (Windows: Device Manager -> Ports -> COMx)
 
-USE_SYNTHETIC_BOARD = True   # True -> BrainFlow synthetic board (no hardware, for testing full pipeline)
+USE_SYNTHETIC_BOARD = True   # True BrainFlow synthetic board (no hardware, for testing full pipeline)
+
+# Execution mode (matches the academic docuemnt of the thesis: HARDWARE vs DEMO)
+#   "HARDWARE": real OpenBCI Cyton board equipment  (USE_SYNTHETIC_BOARD = False)
+#   "DEMO"    : BrainFlow synthetic board  (USE_SYNTHETIC_BOARD = True), no hardware needed
+MODE = "DEMO"
+
+if MODE not in ("HARDWARE", "DEMO"):
+    raise ValueError(f"Invalid MODE {MODE!r}: expected 'HARDWARE' or 'DEMO'")
+
+USE_SYNTHETIC_BOARD = (MODE == "DEMO")   # derived: DEMO is synthetic, HARDWARE is real Cyton
 
 # Acquisition
 FS = 250 # Sampling frequency (Hz)

@@ -11,7 +11,7 @@ import time
 import numpy as np
 import websockets
  
-from config import CELLS, TRIAL_SEC, WINDOW_SEC, FS, TARGET_CELL
+from config import CELLS, TRIAL_SEC, WINDOW_SEC, FS, TARGET_CELL, MODE, USE_SYNTHETIC_BOARD
 from eegsource import CytonEEG
 from recorder import EEGRecorder
 from processing import EEGProcessor
@@ -186,7 +186,8 @@ async def main():
         marker = "   target!" if cid == TARGET_CELL else ""
         print(f"    {cid}. {info['emoji']} {info['label']:6} → {info['freq']} Hz{marker}")
     print(f"  Trial duration: {TRIAL_SEC}s")
-    print("  Connected to Cyton hardware.")
+    #print("  Connected to Cyton hardware.")
+    print(f"  Mode: {MODE}  ({'Synthetic board' if USE_SYNTHETIC_BOARD else 'Cyton board'})")
     print("=" * 70)
  
     source = CytonEEG()
