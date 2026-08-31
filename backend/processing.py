@@ -65,7 +65,8 @@ class EEGProcessor:
     def preprocess(self, eeg_data):
         """Full pipeline: double bandpass -> notch comb -> select channels -> CAR."""
         # 1. Double Butterworth bandpass
-        eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # revisar porque sosfilfilt???
+        eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # filtrado de fase cero (ida y vuelta) con secciones de segundo orden
+        #para otorgar mayor estabilidad 
         eeg = sosfiltfilt(_SOS_BP, eeg, axis=1)
  
         # 2. Notch comb (50 / 100 / 150 Hz)
@@ -77,7 +78,7 @@ class EEGProcessor:
  
         # 4. Common Average Reference
         if APPLY_CAR:
-            eeg = self.apply_car(eeg) # copy del otro codigo???
+            eeg = self.apply_car(eeg)
         return eeg
  
     def apply_car(self, eeg_data):

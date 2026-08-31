@@ -35,7 +35,6 @@ function connect() {
       case 'block_started': handleBlockStarted(msg); break;
       case 'block_result':  handleBlockResult(msg);  break;
       case 'session_ended': handleSessionEnded(msg); break;
-      case 'status':        /* periodic heartbeat, no UI action */ break; /*?*/
     }
   };
 }

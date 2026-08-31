@@ -14,7 +14,8 @@ USE_SYNTHETIC_BOARD = True   # True BrainFlow synthetic board (no hardware, for 
 # Execution mode (matches the academic docuemnt of the thesis: HARDWARE vs DEMO)
 #   "HARDWARE": real OpenBCI Cyton board equipment  (USE_SYNTHETIC_BOARD = False)
 #   "DEMO"    : BrainFlow synthetic board  (USE_SYNTHETIC_BOARD = True), no hardware needed
-MODE = "DEMO"
+#MODE = "DEMO"
+MODE = HARDWARE
 
 if MODE not in ("HARDWARE", "DEMO"):
     raise ValueError(f"Invalid MODE {MODE!r}: expected 'HARDWARE' or 'DEMO'")
