@@ -28,10 +28,10 @@ pip install websockets numpy scipy scikit-learn brainflow
 2. Open the **Device Manager** → Ports (COM)
 3. Note down the port: usually `COM3`,`COM4`, `COM5` or similar.
 4. Edit `backend/config.py`:
-   ```python
-   MODE        = "HARDWARE"   # change from "DEMO" to "HARDWARE"
-   SERIAL_PORT = "COM5"       # write down your port linked to the OpenBCI equipment 
-   ```
+```python
+  MODE        = "HARDWARE"   # change from "DEMO" to "HARDWARE"
+  SERIAL_PORT = "COM5"       # write down your port linked to the OpenBCI equipment 
+```
 
 ---
 

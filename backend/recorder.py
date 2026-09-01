@@ -1,6 +1,4 @@
 # BCI recorder.py 
-# EEG recorder in OpenBCI GUI .txt format
-# Registers the EGG raw entry signals like OpenBCI GUI does
  
 import os
 import re
@@ -11,7 +9,6 @@ from config import RECORD_DIR
  
  
 class EEGRecorder:
-    """Thread-safe recorder that writes OpenBCI GUI .txt files."""
  
     _COLUMN_HEADER = (
         "Sample Index, EXG Channel 0, EXG Channel 1, EXG Channel 2, "
@@ -36,7 +33,6 @@ class EEGRecorder:
         self.current_filename = None
  
     def start(self, label="bci_session"):
-        """Open a new file and write the header."""
         os.makedirs(self.output_dir, exist_ok=True)
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = os.path.join(self.output_dir, f"{label}_{ts_str}.txt")
@@ -62,7 +58,6 @@ class EEGRecorder:
         return filename
  
     def stop(self):
-        """Close the file and end the recording."""
         with self._lock:
             if not self.is_recording:
                 return
@@ -78,7 +73,6 @@ class EEGRecorder:
             self._marker = float(value)
  
     def write_chunk(self, eeg_uv, timestamps, accel=None):
-        """Write a chunk of EEG samples to the open file."""
         with self._lock:
             if not self.is_recording or self._file is None:
                 return

@@ -1,9 +1,4 @@
 # BCI server.py
-# SSVEP BCI Server with real-time feedback operation
-# Implements CCA classification as well
-# One 40s block per session: user gazes at the TARGET_CELL while all flicker simultaneously. 
-# Every 4s window is classified with CCA and the result is streamed to the frontend. T
-# To record every symbol, change TARGET_CELL in config.py and run again.
  
 import asyncio
 import json
@@ -21,7 +16,6 @@ processor = EEGProcessor()
  
  
 class BCIBlock:
-    """Accumulates EEG windows and classifies them with CCA."""
  
     def __init__(self):
         self.trial_data = []
@@ -36,7 +30,6 @@ class BCIBlock:
         self.trial_timestamps.extend(timestamps)
  
     def has_enough_data(self) -> bool:
-        """At least 2s of samples before classifying."""
         return len(self.trial_timestamps) > FS * 2
  
     def classify(self, target_freq) -> dict:
@@ -63,14 +56,12 @@ bci_block = BCIBlock()
  
  
 async def run_blocks(ws, source):
-    """Run one 40s block for TARGET_CELL, classifying every window."""
     results = []
  
     cell_id = TARGET_CELL
     info = CELLS[cell_id]
     freq, emoji, label = info["freq"], info["emoji"], info["label"]
  
-    # Flush the backlog accumulated, then start recording.
     source.get_new_samples()
     fname = recorder.start(f"online_{label}")
     recorder.set_marker(cell_id)
@@ -88,7 +79,7 @@ async def run_blocks(ws, source):
  
     while elapsed_trial < TRIAL_SEC and recorder.is_recording:
         start_time_block = time.time()
-        raw_eeg, raw_ts = await source.get_window()  # 4s of EEG
+        raw_eeg, raw_ts = await source.get_window()
  
         if raw_eeg.shape[1] > 0 and recorder.is_recording:
             bci_block.add_samples(raw_eeg, raw_ts)
@@ -96,6 +87,7 @@ async def run_blocks(ws, source):
  
             if result["correct"]:
                 num_corrects += 1
+            
             num_blocks += 1
             elapsed_block = time.time() - start_time_block
             acc_trial = num_corrects / num_blocks * 100
@@ -121,7 +113,7 @@ async def run_blocks(ws, source):
                 "cell_id": cell_id, "emoji": emoji, "label": label,
                 "correlation": result["corr"], "correct": result["correct"],
                 "detected_freq": result["freq"], "all_corrs": result["all_corrs"],
-                "accuracy": round(acc_trial, 1), "status": status,
+                "accuracy": round(acc_trial, 1),
             }))
  
             bci_block.reset()
@@ -129,7 +121,6 @@ async def run_blocks(ws, source):
         elapsed_trial = time.time() - start_time_trial
         await asyncio.sleep(0.1)
  
-    # At 40 s: write the full trial to disk and stop.
     new_eeg, new_ts = source.get_new_samples()
     if recorder.is_recording:
         recorder.write_chunk(new_eeg, new_ts)
@@ -159,7 +150,6 @@ async def handler(ws, source):
                 pass
  
             await ws.send(json.dumps({
-                "type": "status",
                 "recording": recorder.is_recording,
             }))
  
@@ -186,7 +176,6 @@ async def main():
         marker = "   target!" if cid == TARGET_CELL else ""
         print(f"    {cid}. {info['emoji']} {info['label']:6} → {info['freq']} Hz{marker}")
     print(f"  Trial duration: {TRIAL_SEC}s")
-    #print("  Connected to Cyton hardware.")
     print(f"  Mode: {MODE}  ({'Synthetic board' if USE_SYNTHETIC_BOARD else 'Cyton board'})")
     print("=" * 70)
  

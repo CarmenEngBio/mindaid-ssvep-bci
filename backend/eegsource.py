@@ -8,7 +8,6 @@ from config import SERIAL_PORT, N_CHANNELS, WINDOW, FS, USE_SYNTHETIC_BOARD
  
  
 class CytonEEG:
-    """Interface to the OpenBCI Cyton board (or the synthetic board)."""
  
     def __init__(self):
         BoardShim.disable_board_logger()
@@ -30,11 +29,6 @@ class CytonEEG:
             print(f"✓ Cyton connected at {SERIAL_PORT}")
  
     async def get_window(self):
-        """Return the last WINDOW samples as (eeg, timestamps).
- 
-        If the board has fewer than WINDOW samples buffered, wait for the
-        missing span and re-read, so classification always sees a full window.
-        """
         data = self.board.get_current_board_data(WINDOW)
         n = data.shape[1]
         if n < WINDOW:
@@ -47,7 +41,6 @@ class CytonEEG:
         return eeg[:, -WINDOW:], timestamps[-WINDOW:]
  
     def get_new_samples(self):
-        """DESTRUCTIVE read: drain the buffer and return new (eeg, timestamps)."""
         data = self.board.get_board_data()
         if data.shape[1] == 0:
             return np.zeros((N_CHANNELS, 0)), np.zeros(0)
