@@ -1,8 +1,8 @@
-<img align="left" width="280" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
+<img align="left" width="130" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
 
 <p align="center">
   <br>
-  <strong style="font-size: 32px;">SSVEP Assistive BCI</strong>
+  <strong style="font-size: 50px;">SSVEP Assistive BCI</strong>
 </p>
 
 <br clear="left">
