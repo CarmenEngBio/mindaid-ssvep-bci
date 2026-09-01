@@ -4,7 +4,7 @@
 
 </div>
 
-<br><br>
+<br>
 
 <h1>SSVEP Assistive BCI</h1>
 
