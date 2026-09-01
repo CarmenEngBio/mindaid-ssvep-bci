@@ -1,8 +1,8 @@
 <div style="display: flex; align-items: center;">
 
-  <img width="280" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
+  <img width="130" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
 
-  <h1 style="margin-left: 60px;">SSVEP Assistive BCI</h1>
+  <h1 style="center: 60px;">SSVEP Assistive BCI</h1>
 
 </div>
 
