@@ -17,8 +17,6 @@ A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP
 - Canonical Correlation Analysis (CCA) classification
 - Web User Interface
 
----
-
 ## Requirements
 
 ```
