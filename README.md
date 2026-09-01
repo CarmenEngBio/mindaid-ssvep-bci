@@ -10,8 +10,6 @@ Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez
 
 A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
 
----
-
 ## Main Features
 
 - SSVEP stimulation
