@@ -2,7 +2,7 @@
 
 <p align="center">
   <br>
-  <strong style="font-size: 100px;">SSVEP Assistive BCI</strong>
+  <font size="6"><strong>SSVEP Assistive BCI</strong></font>
 </p>
 
 <br clear="left">
@@ -11,7 +11,9 @@
   Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez
 </p>
 
-A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
+<p align="center">
+  A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
+</p>
 
 ## Main Features
 
