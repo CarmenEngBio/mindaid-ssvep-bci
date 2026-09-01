@@ -1,8 +1,9 @@
-<img align="left" width="130" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
+<div style="display: flex; align-items: center; justify-content: center; position: relative; width: 100%;">
+  <img width="130" alt="MindAid_logo_transparent_small" src="https://github.com" style="position: absolute; left: 0;" />
+  <h1 style="margin: 0;"><strong>SSVEP Assistive BCI</strong></h1>
+</div>
 
-<p align="center">
-  <h1><strong>&nbsp;&nbsp;&nbsp;&nbsp; SSVEP Assistive BCI</strong></h1>
-</p>
+<br>
 
 <p align="center">
   Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez
@@ -11,6 +12,7 @@
 <p align="center">
   A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
 </p>
+
 
 ## Main Features
 
