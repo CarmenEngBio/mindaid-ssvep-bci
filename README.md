@@ -122,3 +122,12 @@ mindaid-ssvep-bci/
 | `websocket.js` | Connection/re-connection of the WebSocket and messages exchange management |
 | `ui.js` | Use of DOM management created by the html and linked to css that manages its appearance |
 | `app.js` | Entry main point that launches the flickering and the websocket communication |
+
+<hr>
+
+<p align="center">
+  <img width="100" alt="MindAid" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
+  <br><br>
+  <sub><strong>MindAid</strong> · SSVEP Assistive BCI</sub><br>
+  <sub>Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez</sub>
+</p>
