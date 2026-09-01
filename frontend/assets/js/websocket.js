@@ -1,5 +1,4 @@
 // BCI websocket.js
-// WebSocket communication between browser and server
  
 var WS_URL = 'ws://localhost:8765';
 var RETRY_MS = 2000;
@@ -40,7 +39,6 @@ function connect() {
 }
  
 function handleBlockStarted(msg) {
-  // Tell the user which cell to gaze at. All cells keep flickering.
   showMessage(msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + ' Hz)', 'info');
  
   if (msg.file) {
@@ -53,13 +51,11 @@ function handleBlockStarted(msg) {
 }
 
 function handleBlockResult(msg) {
-  // Clear any previous selection
   clearCellSelection();
 
   var cell = document.getElementById('cell-' + msg.cell_id);
 
   if (msg.correct) {
-    // Mark the detected cell green
     if (cell) cell.classList.add('selected');
 
     showMessage(
@@ -83,8 +79,8 @@ function handleSessionEnded(msg) {
   btn.style.display = 'block';
   btn.disabled = false;
 }
- 
-// Connect once the DOM is ready.
+
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', connect);
 } else {

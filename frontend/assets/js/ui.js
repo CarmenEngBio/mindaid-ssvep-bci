@@ -1,6 +1,5 @@
 // BCI ui.js 
-// Displays User Interface helper functionalities
- 
+
 function setConnectionStatus(state) {
   const el = document.getElementById('status');
   if (!el) return;
@@ -16,7 +15,7 @@ function setConnectionStatus(state) {
  
 function clearCellSelection() {
   document.querySelectorAll('.key').forEach(cell => {
-    cell.classList.remove('selected', 'error');
+    cell.classList.remove('selected');
     cell.style.backgroundColor = '';
   });
 }
@@ -26,7 +25,7 @@ function showMessage(text, type) {
   if (!el) return;
  
   el.textContent = text;
-  const colors = { error: '#ff6b6b', success: '#51cf66', info: '#74c0fc' };
+  const colors = { success: '#51cf66', info: '#74c0fc' };
   el.style.color = colors[type] || '#aaa';
 }
  

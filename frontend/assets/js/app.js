@@ -1,6 +1,5 @@
-// BCI app.js --> Initialises frontend
-// app.js — entry point: starts the flicker engine and defines startTest().
- 
+// BCI app.js
+
 window.addEventListener('load', function () {
   initFlicker();
 });

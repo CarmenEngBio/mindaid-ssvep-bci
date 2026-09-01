@@ -160,6 +160,7 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  # Preprocessing.py
 
  Includes SSVEP preprocessing and CCA classification.
+ - Entry eeg data is gathered as a 2D array of shape `(N_CHANNELS, WINDOW) == (8, 1000)`
  - Preprocesses the gathered signals by using **Bandpass**, **Notch** and **CAR**
  - Processes the **CCA reference comparison signals** built from CCA_HARMONICS.
  - Classifies the entry data against the reference signals built.
@@ -175,15 +176,13 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  # Pre-compute filters
 
  - **def build_bandpass(lo=BP_LO, hi=BP_HI, order=4)**: 
-    - It implements a bandpass filter of 4th order. 
-    - It calculates the Butterworth coefficients normalized at the Nyquist frequency.
+    - It enables the implementation of a bandpass filter of 4th order. 
+    - It calculates the Butterworth coefficients normalized at the Nyquist frequency and returns them.
     - It erases the DC offset and high frequency artifacts.
-    - Signal used is a one dimensional array (one window of one channel).
 
  - **def build_notch_comb(fundamental=NOTCH_FUND, n_harmonics=NOTCH_NH, Q=NOTCH_Q)**:
     - It implements Notch comb at fundamental freq (50 Hz) and its harmonics (50 / 100 / 150 Hz).
     - It erases the power line interference. 
-    - Signal used is a one dimensional array (one window of one channel).
 
  This module also includes:
  - **EEGProcessor()**: it integrates the preprocessing and classification pipeline.
@@ -192,11 +191,11 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  Inside EEGProcessor the following functions are included:
  1. **preprocess(self, eeg_data)**:
       - Gathers the full pipeline: bandpass + notch comb + channel selection and CAR.
-      - It returns the eeg data filtered to classify it afterwards.
+      - It returns the eeg data `(len(USED_CHANNELS), WINDOW) == (4, 1000)` filtered to classify it afterwards.
 
       ```python
       # 1. Double Butterworth bandpass
-      eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # zero phase filter (both directions) to provide stability
+      eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # zero phase forward-backward filter to provide stability
       eeg = sosfiltfilt(_SOS_BP, eeg, axis=1)
 
       # 2. Notch comb (50 / 100 / 150 Hz)
@@ -204,7 +203,7 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
          eeg = sosfiltfilt(sos_n, eeg, axis=1)
 
       # 3. Selection of occipital and parietal channels
-      eeg = eeg[self.used_channels, :]
+      eeg = eeg[self.used_channels, :] # (4, 1000)
 
       # 4. Common Average Reference
       if APPLY_CAR:
@@ -212,7 +211,7 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
         
       return eeg
       ```
-      - Common Average Reference substracts the spatial average to each sample across channels.
+      - Common Average Reference substracts the spatial average from each channel across their samples.
       - It reduces the common artifacts to all the electrodes (movement, EMG).
       - eeg is an ndarray: `(N_CHANNELS, WINDOW)`
       ```python
@@ -223,12 +222,12 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  
  2. **CCA** 
       - It is the SSVEP Classifier based on Canonical Correlation Analysis (CCA).
-      - For each candidate frequency, it is built a sinusoidal reference signal with N harmonics and it is calculated the canonical one with the EEG window. 
-      - The frequency with mayor correlation will be the prediction.
+      - For each candidate frequency, it is built a sinusoidal reference signal with N harmonics and it is calculated the first canonical correlation between the EEG window and reference. 
+      - The frequency with major correlation will be the prediction.
 
    - **generate_references(self, frequency, n_samples)**:
     - Builds the sinusoidal reference matrix for one frequency.
-    - Includes `N_HARMONICS` to combine them with sines and cosines per harmonic.
+    - Includes `CCA_HARMONICS` list to combine them with sines and cosines per harmonic.
     - This function is the bank of reference generated signals.
     - It returns an array of shape (n_samples, 2*len(CCA_HARMONICS)).
    ```python
@@ -244,20 +243,23 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
    - **classify(self, eeg_data, frequencies)**:
     - It classifies one EEG window with CCA against all the SSVEP frequencies.
     - The parameters are: eeg, which is a ndarray `(n_channels, n_samples)` already preprocessed.
-    - It returns (best_freq, best_corr, all_corrs) via CCA over candidate freqs.
+    - Both X and Y matrices are transposed to have the same number of rows: `X.T == (1000, 4)` and `Y.T == (1000, 6)`.
+    - It returns (best_freq, best_corr, all_corrs) via CCA over candidate freqs, including their correlations in a dictionary format.
 
    - **def canonical_corr(self, X, Y)**:
-    - It considers the first canonical correlation between X and Y.
+    - Returns the first canonical correlation between X (eeg, (n_samples, n_channels)) and Y (reference bank, (n_samples, 2·n_harmonics)).
+    - Fits the CCA with the canonical correlation component equals to 1, such that the absolute correlation of the first canonical pair is extracted: ρ1
 
 ---
 
 # Recorder.py
 
- It is the EEG recorder in OpenBCI GUI .txt format
- It registers the EGG raw entry signals like OpenBCI GUI does.
+ It is the raw EEG recorder that registers the entry signals like the OpenBCI GUI .txt format.
+ Metadata is quite similar in order to analyse porduced signal at Jupyter Notebooks.
+ Files are saved at the generated folder `RECORD_DIR == recordings`. 
 
  This module contains:
- - **EEGRecorder()**: this class is a thread-safe recorder that writes OpenBCI GUI .txt files, following the GUI header:
+ - **EEGRecorder()**: this class is a thread-safe locked to avoid overlapping different tasks (i.e. star, stop, write, ...).This recorder writes like OpenBCI GUI .txt files, following the GUI header:
    ```python
     _COLUMN_HEADER = (
         "Sample Index, EXG Channel 0, EXG Channel 1, EXG Channel 2, "
@@ -271,4 +273,5 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
    ```
  - **start(self, label="bci_session")**: opens a new file and writes the header.
  - **stop(self)**: closes the file and ends the recording.
- - **write_chunk(self, eeg_uv, timestamps, accel=None)**: writes a chunk of EEG samples to the open file.
+ - **write_chunk(self, eeg_uv, timestamps, accel=None)**: writes a chunk of EEG samples expected in microvolts to the open file.It uses certain parameters (1-255 sampling indexes, fixed unused values likes zeros or 192, timestamp in java format, ...), similar to Java due to the OpenBCI GUI been linked to the Processing software to generate the recording files.
+ - **_to_java_sci**: modifies the Java exponent format (E9 instead of E+09) in order to mimic the .txt byte-compatible to the OpenBCI GUI.

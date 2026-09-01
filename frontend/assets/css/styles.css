@@ -1,6 +1,4 @@
-/* BCI styles.css --> Models the index UI appearance */
-
-/* styles.css — SSVEP Assistive BCI */
+/* BCI styles.css */
  
 * {
   box-sizing: border-box;
@@ -37,8 +35,7 @@ h1 {
 #status.ok {
   color: #6abf69;
 }
- 
-/* KEYPAD — 4 celdas en fila */
+
 #keypad {
   display: flex;
   gap: 3cm;
@@ -46,7 +43,6 @@ h1 {
   flex-wrap: wrap;
 }
  
-/* CELDAS GRANDES */
 .key {
   width: 8cm;
   height: 8cm;
@@ -60,7 +56,6 @@ h1 {
   color: #000;
   user-select: none;
   cursor: default;
-  /*transition: all 0.15s ease;*/
   background: #0a0a0a;
 }
  
@@ -77,31 +72,23 @@ h1 {
   letter-spacing: 0.05em;
 }
  
-/* FLICKERING */
 .key.on {
   background: #ffffff;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
-  filter: brightness(1.2) saturate(0.5); /*← Uniformiza color */
+  filter: brightness(1.2) saturate(0.5);
 }
  
 .key.off {
   background: #0a0a0a;
   color: #666;
-  filter: brightness(0.7) saturate(0.5);  /*← Uniformiza apagado */
+  filter: brightness(0.7) saturate(0.5);
 }
  
-/* SELECCIONADA (✅ CORRECTO) */
+
 .key.selected {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   color: #ffffff;
   box-shadow: 0 0 40px rgba(52, 211, 153, 0.8);
-}
- 
-/* ERROR (❌ INCORRECTO) */
-.key.error {
-  background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
-  color: #ffffff;
-  box-shadow: 0 0 40px rgba(255, 107, 107, 0.8);
 }
  
 #phase-label {
@@ -110,8 +97,7 @@ h1 {
   min-height: 1.5em;
   text-align: center;
 }
- 
-/* PANEL DE CONTROL */
+
 #test-panel {
   display: flex;
   flex-direction: column;
@@ -156,31 +142,7 @@ h1 {
   max-width: 600px;
   text-align: center;
 }
- 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  #keypad {
-    gap: 1.5cm;
-  }
- 
-  .key {
-    width: 7cm;
-    height: 7cm;
-  }
- 
-  .key .emoji {
-    font-size: 2.8rem;
-  }
- 
-  .key .label {
-    font-size: 0.7rem;
-  }
- 
-  h1 {
-    font-size: 1.3rem;
-  }
-}
-/*  Modal of instructions */
+
 #modal-overlay {
   position: fixed;
   inset: 0;
