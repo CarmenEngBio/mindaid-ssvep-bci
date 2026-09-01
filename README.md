@@ -1,7 +1,14 @@
-<div style="display: flex; align-items: center; justify-content: center; position: relative; width: 100%;">
-  <img width="130" alt="MindAid_logo_transparent_small" src="https://github.com" style="position: absolute; left: 0;" />
-  <h1 style="margin: 0;"><strong>SSVEP Assistive BCI</strong></h1>
-</div>
+<table width="100%" border="0" style="border: none; border-collapse: collapse;">
+  <tr style="border: none;">
+    <td width="15%" align="left" style="border: none; padding: 0; vertical-align: middle;">
+      <img width="130" alt="MindAid_logo_transparent_small" src="https://github.com" />
+    </td>
+    <td width="70%" align="center" style="border: none; padding: 0; vertical-align: middle;">
+      <h1 style="margin: 0; display: inline-block;"><strong>SSVEP Assistive BCI</strong></h1>
+    </td>
+    <td width="15%" style="border: none; padding: 0;"></td>
+  </tr>
+</table>
 
 <br>
 
@@ -12,6 +19,7 @@
 <p align="center">
   A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
 </p>
+
 
 
 ## Main Features
