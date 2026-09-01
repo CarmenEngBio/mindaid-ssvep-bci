@@ -1,10 +1,11 @@
-<div style="display: flex; align-items: center;">
+<img align="left" width="280" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
 
-  <img width="130" alt="MindAid_logo_transparent_small" src="https://github.com/user-attachments/assets/a28d5faf-4894-45be-ac04-4fe38ef18689" />
+<p align="center">
+  <br>
+  <strong style="font-size: 32px;">SSVEP Assistive BCI</strong>
+</p>
 
-  <h1 style="center: 60px;">SSVEP Assistive BCI</h1>
-
-</div>
+<br clear="left">
 
 Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez
 
