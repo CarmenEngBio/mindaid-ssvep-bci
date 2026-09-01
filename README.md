@@ -4,6 +4,8 @@
   <h1><strong>SSVEP Assistive BCI</strong></h1>
 </p>
 
+<br clear="left">
+
 <p align="center">
   Bachelor Thesis · Biomedical Engineering · Carmen Areses Sánchez
 </p>
