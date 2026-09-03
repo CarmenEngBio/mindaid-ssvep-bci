@@ -21,7 +21,7 @@ CHANNEL_NAMES = ["P7", "P8", "O1", "O2"]
 WINDOW_SEC = 4 
 WINDOW     = FS * WINDOW_SEC
 
-TARGET_CELL = 4
+TARGET_CELL = 2
 
 CELLS = {
     1: {"emoji": "🍽️",  "label": "Eat", "freq": 8.57},

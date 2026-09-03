@@ -213,7 +213,7 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
       ```
       - Common Average Reference substracts the spatial average from each channel across their samples.
       - It reduces the common artifacts to all the electrodes (movement, EMG).
-      - eeg is an ndarray: `(N_CHANNELS, WINDOW)`
+      - eeg is an ndarray: `(4, 1000)`
       ```python
       def apply_car(self, eeg_data):
         mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
