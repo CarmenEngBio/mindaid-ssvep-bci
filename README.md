@@ -40,10 +40,21 @@ pip install websockets numpy scipy scikit-learn brainflow
 ## Running the program
 
 ```bash
+cd backend
 python server.py
 ```
 
-Then open the `index.html` file in your browser (double-click).
+Then open the `frontend/index.html` file in your browser (double-click).
+
+---
+
+## System operation
+
+During each experimental registration (40s), the four visual stimuli flicker simultaneously at their corresponding frequencies. The user focuses their gaze on the target stimulus previously assigned while EEG data are acquired.
+
+The EEG signal is processed in real time using band-pass filtering, notch filtering, Common Average Reference (CAR), and Canonical Correlation Analysis (CCA). At the end of each iteration, the system compares the estimated frequency with the target frequency.
+
+When the detected stimulus corresponds to the target, the selected cell is highlighted in green as visual feedback at the web User Interface.
 
 ---
 
@@ -77,8 +88,8 @@ Then open the `index.html` file in your browser (double-click).
 
 ```
 mindaid-ssvep-bci/
-├── server.py    ← placed at backend which connects Cyton raw data + preprocessing + CCA + WebSocket
-├── index.html   ← placed at frontend which calls the UI arrangement + flicker + real-time visualization + WebSocket
+├── backend    ← connects Cyton raw data + preprocessing + CCA + WebSocket
+├── frontend   ← calls the UI arrangement + flicker + real-time visualization + WebSocket
 └── README.md
 ```
 
@@ -90,9 +101,10 @@ mindaid-ssvep-bci/
 mindaid-ssvep-bci/
 ├── backend/
 │   ├── config.py          ← parameters are declared here
-│   ├── eegsource.py      ← connection with OpenBCI Cyton board
-│   ├── processing.py   ← preprocessing (bandpass + notch + CAR) & CCA classifier
-│   └── server.py          ← WebSocket + main (entry endpoint)
+│   ├── eegsource.py      ← connection with OpenBCI Cyton board or synthetic board
+│   ├── processing.py   ← preprocessing (bandpass + notch + CAR) & CCA classification
+|   ├── recorder.py      ← EEG data reocording and file generation 
+│   └── server.py          ← WebSocket communication and main application
 │
 └── frontend/
     ├── index.html
@@ -112,9 +124,10 @@ mindaid-ssvep-bci/
  
 | File | Functionality |
 |---|---|
-| `config.py` | System parameters (fs, window, frequencies, recodring duration, …) |
-| `eegsources.py` | Abstraction of EGG source (DEMO or real HARDWARE) |
-| `preprocessing.py` | Filters: bandpass, notch 50 Hz, CAR; CCA classification |
+| `config.py` | System parameters (fs, window, frequencies, recording duration, …) |
+| `eegsource.py` | Abstraction of EGG source (DEMO or real HARDWARE) |
+| `processing.py` | Filters: bandpass, notch 50 Hz, CAR; CCA classification |
+| `recorder.py` | Recording and storage of EEG data in OpenBCI-compatible `.txt` files |
 | `server.py` | Handler WebSocket and launch of server |
 | `flicker.js` | Key flickering at SSVEP exact frequencies |
 | `websocket.js` | Connection/re-connection of the WebSocket and messages exchange management |
