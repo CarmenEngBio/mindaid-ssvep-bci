@@ -90,10 +90,8 @@ mindaid-ssvep-bci/
 mindaid-ssvep-bci/
 ├── backend/
 │   ├── config.py          ← parameters are declared here
-│   ├── eegsources.py      ← DemoEEG + CytonEEG
-│   ├── preprocessing.py   ← bandpass + notch + CAR
-│   ├── cca.py             ← reference signal + CCA classifier
-│   ├── voting.py          ← temporal majority voting algorithm
+│   ├── eegsource.py      ← connection with OpenBCI Cyton board
+│   ├── processing.py   ← preprocessing (bandpass + notch + CAR) & CCA classifier
 │   └── server.py          ← WebSocket + main (entry endpoint)
 │
 └── frontend/
@@ -103,7 +101,7 @@ mindaid-ssvep-bci/
         │   └── styles.css (website visualization)
         └── js/
             ├── app.js         ← entry endpoint
-            ├── flicker.js     ← flickering SSVEP engine (rAF)
+            ├── flicker.js     ← flickering SSVEP engine
             ├── websocket.js   ← WebSocket connection + re-connection
             └── ui.js          ← update of DOM
 ```
