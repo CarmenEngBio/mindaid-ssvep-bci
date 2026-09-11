@@ -10,6 +10,9 @@
   A Brain-Computer Interface based on Steady-State Visual Evoked Potentials (SSVEP) for assistive communication using symbolic visual stimuli.
 </p>
 
+## Development history
+The early stages, experiments and previous versions of this project are kept in the following repository, [ssvep-basic](https://github.com/CarmenEngBio/ssvep-basic).
+
 ## Main Features
 
 - SSVEP stimulation

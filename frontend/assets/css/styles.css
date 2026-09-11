@@ -31,10 +31,6 @@ h1 {
   color: #888;
   transition: color 0.3s;
 }
- 
-#status.ok {
-  color: #6abf69;
-}
 
 #keypad {
   display: flex;

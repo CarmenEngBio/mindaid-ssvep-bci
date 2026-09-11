@@ -65,8 +65,8 @@ TRIAL_SEC = 40  # Duration of each session (s)
 6. Signal Processing
  ```python
     #Bandpass
-    BP_LOW       = 7.0    # low cut Hz
-    BP_HIGH      = 70.0   # high cut Hz
+    BP_LO       = 7.0    # low cut Hz
+    BP_HI      = 70.0   # high cut Hz
     NOTCH_FREQ   = 50.0   # Hz (Power Line Interference)
     # Notch comb
     NOTCH_FUND = 50.0            # Fundamental frequency of PLI (Hz)
@@ -78,6 +78,17 @@ TRIAL_SEC = 40  # Duration of each session (s)
     # CAR
     APPLY_CAR = True   # Common Average Reference
  ```
+
+ ### Note on the notch comb filter
+The notch comb targets the power-line interference (PLI) fundamental at 50 Hz
+and its harmonics by using `NOTCH_FUND` and `NOTCH_NH`. 
+
+At the 250 Hz sampling rate of the Cyton board the Nyquist frequency is 125 Hz, 
+so the 150 Hz harmonic lies outside the representable band and is automatically 
+skipped while the other harmonics are included when it is called at 
+`processing.py` module at `build_notch_comb()` function.
+
+
 7. Recording sessions storage
  Raw EEG data is saved in a `.txt` file to try to mimic OpenBCI GUI operation:
 ```python
@@ -101,6 +112,36 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  
  All the specified parameters are declared and initialised at the `config.py` file.
  The signal logics is split among the different specialised modules.
+
+> **IMPORTANT!** Add the following code to this module so that the server console commands are saved 
+automatically as a `.txt` file (that can be loaded to the Jupyter Notebook provided).
+
+**In the imports:**
+
+```python
+import sys, os
+from datetime import datetime
+from config import RECORD_DIR   # add it to the config import line
+
+class _Tee:
+    """Mirror stdout: console + .txt file."""
+    def __init__(self, *streams): self.streams = streams
+    def write(self, d):
+        for s in self.streams: s.write(d)
+    def flush(self):
+        for s in self.streams: s.flush()
+```
+
+**At the very start of `main()`:**
+
+```python
+os.makedirs(RECORD_DIR, exist_ok=True)
+_label = CELLS[TARGET_CELL]["label"]
+_ts    = datetime.now().strftime("%Y%m%d_%H%M%S")
+_log   = open(os.path.join(RECORD_DIR, f"results_{_label}_{_ts}.txt"),
+              "w", encoding="utf-8", buffering=1)
+sys.stdout = _Tee(sys.stdout, _log)
+```
 
  ## BCIBlock
  - Each 0.1 s it gathers the **window** of the signal (through CytonEEG class), then it **preprocess** the signal (through EEGProcessor class), it applies the **classification** (through EEGProcessor) and lastly the data is **sent** through the WS in order to be displaced at the UI.

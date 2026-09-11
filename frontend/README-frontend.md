@@ -55,8 +55,7 @@
  - **connect**: this function opens the connection between the browser and the server; reattempts it 2s later if it was not done.
  - **handleBlockStarted**: tells the user which cell to gaze at while all of them keep flickering at their frequency of oscillation.
  - **handleBlockResult**: clears the previous selection and marks the cell in green if it was detected. 
- - **handleSessionEnded**: finishes the countdown, clears the selection for the next recording session and shows the accuracy rate in percentage and respect to the total number of processed blocks. 
- - **handleSessionEnded**: restores the UI such that a new session can be selected by pressing the Start Button available again.
+ - **handleSessionEnded**: finishes the countdown, clears the selection for the next recording session and shows the accuracy rate in percentage and respect to the total number of processed blocks. It restores the UI such that a new session can be selected by pressing the Start Button available again.
 
 
 
