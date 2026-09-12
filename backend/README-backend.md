@@ -236,8 +236,8 @@ This module gathers:
 
  Inside EEGProcessor the following functions are included:
  1. **preprocess(self, eeg_data)**:
-      - Gathers the full pipeline: bandpass + notch comb + channel selection and CAR.
-      - It returns the eeg data `(len(USED_CHANNELS), WINDOW) == (4, 1000)` filtered to classify it afterwards.
+ - Gathers the full pipeline: bandpass + notch comb + channel selection and CAR.
+ - It returns the eeg data `(len(USED_CHANNELS), WINDOW) == (4, 1000)` filtered to classify it afterwards.
 
      ```python
      # 1. Double Butterworth bandpass
@@ -257,9 +257,9 @@ This module gathers:
        
      return eeg
      ```
-      - Common Average Reference substracts the spatial average from each channel across their samples.
-      - It reduces the common artifacts to all the electrodes (movements like EMG).
-      - eeg is an ndarray: `(4, 1000)`
+- Common Average Reference substracts the spatial average from each channel across their samples.
+- It reduces the common artifacts to all the electrodes (movements like EMG).
+- eeg is an ndarray: `(4, 1000)`
      ```python
      def apply_car(self, eeg_data):
        mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
