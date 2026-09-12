@@ -308,17 +308,17 @@ This module gathers:
  This module contains:
  - **EEGRecorder()**: this class is a thread-safe locked to avoid overlapping different tasks (i.e. star, stop, write, ...).
  - This recorder writes like OpenBCI GUI .txt files, following the GUI header:
-   ```python
-    _COLUMN_HEADER = (
-        "Sample Index, EXG Channel 0, EXG Channel 1, EXG Channel 2, "
-        "EXG Channel 3, EXG Channel 4, EXG Channel 5, EXG Channel 6, "
-        "EXG Channel 7, Accel Channel 0, Accel Channel 1, Accel Channel 2, "
-        "Not Used, Digital Channel 0 (D11), Digital Channel 1 (D12), "
-        "Digital Channel 2 (D13), Digital Channel 3 (D17), Not Used, "
-        "Digital Channel 4 (D18), Analog Channel 0, Analog Channel 1, "
-        "Analog Channel 2, Timestamp, Marker Channel, Timestamp (Formatted)"
-    )
-   ```
+ ```python
+  _COLUMN_HEADER = (
+      "Sample Index, EXG Channel 0, EXG Channel 1, EXG Channel 2, "
+      "EXG Channel 3, EXG Channel 4, EXG Channel 5, EXG Channel 6, "
+      "EXG Channel 7, Accel Channel 0, Accel Channel 1, Accel Channel 2, "
+      "Not Used, Digital Channel 0 (D11), Digital Channel 1 (D12), "
+      "Digital Channel 2 (D13), Digital Channel 3 (D17), Not Used, "
+      "Digital Channel 4 (D18), Analog Channel 0, Analog Channel 1, "
+      "Analog Channel 2, Timestamp, Marker Channel, Timestamp (Formatted)"
+  )
+ ```
  - **start(self, label="bci_session")**: opens a new file and writes the header.
  - **stop(self)**: closes the file and ends the recording.
  - **write_chunk(self, eeg_uv, timestamps, accel=None)**: writes a chunk of EEG samples expected in microvolts to the open file.
