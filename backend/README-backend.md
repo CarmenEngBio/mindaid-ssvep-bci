@@ -79,14 +79,14 @@ TRIAL_SEC = 40  # Duration of each session (s)
     APPLY_CAR = True   # Common Average Reference
  ```
 
-   ### Note on the notch comb filter
-   The notch comb targets the power-line interference (PLI) fundamental at 50 Hz
-   and its harmonics by using `NOTCH_FUND` and `NOTCH_NH`. 
-   
-   As the 250 Hz is the sampling rate of the Cyton board its Nyquist frequency is 125 Hz, 
-   so the 150 Hz harmonic mentioned previously lies outside the representable band and is 
-   automatically skipped while the other harmonics are included when it is called at 
-   `processing.py` module at `build_notch_comb()` function.
+> ### Note on the notch comb filter
+> The notch comb targets the power-line interference (PLI) fundamental at 50 Hz
+> and its harmonics by using `NOTCH_FUND` and `NOTCH_NH`. 
+> 
+> As the 250 Hz is the sampling rate of the Cyton board its Nyquist frequency is 125 Hz, 
+> so the 150 Hz harmonic mentioned previously lies outside the representable band and is 
+> automatically skipped while the other harmonics are included when it is called at 
+> `processing.py` module at `build_notch_comb()` function.
 
 
 7. Recording sessions storage:
