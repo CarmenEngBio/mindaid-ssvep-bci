@@ -11,7 +11,7 @@
 </p>
 
 ## Development history
-The early stages, experiments and previous versions of this project are kept in the following repository, [ssvep-basic](https://github.com/CarmenEngBio/ssvep-basic).
+The early stages, experiments and previous versions of this project are kept in the following repository: [ssvep-basic](https://github.com/CarmenEngBio/ssvep-basic).
 
 ## Main Features
 
@@ -53,11 +53,12 @@ Then open the `frontend/index.html` file in your browser (double-click).
 
 ## System operation
 
-During each experimental registration (40s), the four visual stimuli flicker simultaneously at their corresponding frequencies. The user focuses their gaze on the target stimulus previously assigned while EEG data are acquired.
+During each experimental registration (40s), the four visual stimuli flicker simultaneously at their corresponding frequencies. The user focuses their gaze on the target stimulus previously assigned while EEG data is acquired.
 
-The EEG signal is processed in real time using band-pass filtering, notch filtering, Common Average Reference (CAR), and Canonical Correlation Analysis (CCA). At the end of each iteration, the system compares the estimated frequency with the target frequency.
+The EEG signal is processed in real time using band-pass filtering, notch filtering, Common Average Reference (CAR), and Canonical Correlation Analysis (CCA). 
+At the end of each iteration, the system compares the estimated frequency with the target frequency.
 
-When the detected stimulus corresponds to the target, the selected cell is highlighted in green as visual feedback at the web User Interface.
+When the detected stimulus corresponds to the target during the recording, the selected cell is highlighted in green to provide visual feedback to the user at the web User Interface.
 
 ---
 
@@ -91,8 +92,8 @@ When the detected stimulus corresponds to the target, the selected cell is highl
 
 ```
 mindaid-ssvep-bci/
-├── backend    ← connects Cyton raw data + preprocessing + CCA + WebSocket
-├── frontend   ← calls the UI arrangement + flicker + real-time visualization + WebSocket
+├── backend    ← raw Cyton data board connection or synthetic for simulation + data preprocessing + CCA classification + WebSocket communication
+├── frontend   ← UI arrangement call + flicker engine initialization + real-time visualization + WebSocket communication
 └── README.md
 ```
 
@@ -106,19 +107,19 @@ mindaid-ssvep-bci/
 │   ├── config.py          ← parameters are declared here
 │   ├── eegsource.py      ← connection with OpenBCI Cyton board or synthetic board
 │   ├── processing.py   ← preprocessing (bandpass + notch + CAR) & CCA classification
-|   ├── recorder.py      ← EEG data reocording and file generation 
+|   ├── recorder.py      ← EEG data recording and file generation 
 │   └── server.py          ← WebSocket communication and main application
 │
 └── frontend/
     ├── index.html
     └── assets/
         ├── css/
-        │   └── styles.css (website visualization)
+        │   └── styles.css (website arrangement visualization)
         └── js/
             ├── app.js         ← entry endpoint
             ├── flicker.js     ← flickering SSVEP engine
-            ├── websocket.js   ← WebSocket connection + re-connection
-            └── ui.js          ← update of DOM
+            ├── websocket.js   ← WebSocket connection + re-connection with server
+            └── ui.js          ← update of DOM + helper functions
 ```
 
 ---
