@@ -31,20 +31,20 @@ USE_SYNTHETIC_BOARD = True   # Uses generated BrainFlow synthetic board
 # If HARDWARE is selected -> real OpenBCI Cyton board equipment is used (USE_SYNTHETIC_BOARD = False)
 # If DEMO is chosen -> BrainFlow synthetic board is used (USE_SYNTHETIC_BOARD = True)
 ```
- 2. Acquisition Hardware
+ 2. Acquisition Hardware:
  ```python
     FS         = 250   # Cyton fs is around 250 Hz
     N_CHANNELS = 8     # Fp1 Fp2 C3 C4 P7 P8 O1 O2
     USED_CHANNELS = [4, 5, 6, 7] # P7, P8, O1, O2 are used by the classifier
  ```
- 3. Classification Window
- The typical literature values are between 1–4 s.
+ 3. Classification Window:
+ The typical literature values are between 1-4 s.
  ```python
     WINDOW_SEC = 4 # window length for classification (s)
     WINDOW     = FS * WINDOW_SEC   # number of samples: 250 x 4 = 1000 samples
  ```
- 4. Session per target cell
- The online server runs one cell per session.
+ 4. Session per target cell:
+ The online server runs one cell registration per session.
  To set which symbol the user is asked to gaze at the following is changed to record every symbol:
 ```python
 TARGET_CELL = 4 # variable changed in every session to assign the objective cell
@@ -57,12 +57,12 @@ CELLS = {
     4: {"emoji": "🚽",  "label": "WC", "freq": 15.0},
 }
 ```
-5. Trial timing
+5. Trial timing:
  Can be adjusted considering the possible effects (higher recording time -> introduction of artifacts due to tiredness):
 ```python
 TRIAL_SEC = 40  # Duration of each session (s)
 ```
-6. Signal Processing
+6. Signal Processing:
  ```python
     #Bandpass
     BP_LO       = 7.0    # low cut Hz
@@ -79,17 +79,17 @@ TRIAL_SEC = 40  # Duration of each session (s)
     APPLY_CAR = True   # Common Average Reference
  ```
 
- ### Note on the notch comb filter
+### Note on the notch comb filter
 The notch comb targets the power-line interference (PLI) fundamental at 50 Hz
 and its harmonics by using `NOTCH_FUND` and `NOTCH_NH`. 
 
-At the 250 Hz sampling rate of the Cyton board the Nyquist frequency is 125 Hz, 
-so the 150 Hz harmonic lies outside the representable band and is automatically 
-skipped while the other harmonics are included when it is called at 
+As the 250 Hz is the sampling rate of the Cyton board its Nyquist frequency is 125 Hz, 
+so the 150 Hz harmonic mentioned previously lies outside the representable band and is 
+automatically skipped while the other harmonics are included when it is called at 
 `processing.py` module at `build_notch_comb()` function.
 
 
-7. Recording sessions storage
+7. Recording sessions storage:
  Raw EEG data is saved in a `.txt` file to try to mimic OpenBCI GUI operation:
 ```python
 RECORD_DIR = "recordings" # files are saved automatically inside this generated folder
@@ -98,11 +98,11 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
 
  # Server.py
 
- SSVEP BCI Server with real-time feedback operation. It implements:
+ SSVEP BCI server with real-time feedback operation. It implements:
  - CCA classification
- - Recording one 40s block per session: the user gazes at the TARGET_CELL while all flicker simultaneously. 
- - Every 4s window is classified with CCA and the result is streamed to the frontend.
- - To record every symbol, change **TARGET_CELL** in config.py and run again.
+ - Recording one 40s block per session: the user gazes at the TARGET_CELL while all cells flicker simultaneously. 
+ - Every 4s a window is classified with CCA and the result is streamed to the frontend, producing a latency value around 30 ms at each iteration.
+ - To record every symbol, change **TARGET_CELL** in `config.py` and run again.
 
  It is also the entry point of the backend where:
   - **BCIBlock()** accumulates the EEG windows and classifies them with CCA. 
@@ -114,7 +114,7 @@ RECORD_DIR = "recordings" # files are saved automatically inside this generated 
  The signal logics is split among the different specialised modules.
 
 > **IMPORTANT!** Add the following code to this module so that the server console commands are saved 
-automatically as a `.txt` file (that can be loaded to the Jupyter Notebook provided).
+automatically as a `.txt` file (that can be loaded to the Jupyter Notebook provided at docs).
 
 **In the imports:**
 
@@ -144,7 +144,7 @@ sys.stdout = _Tee(sys.stdout, _log)
 ```
 
  ## BCIBlock
- - Each 0.1 s it gathers the **window** of the signal (through CytonEEG class), then it **preprocess** the signal (through EEGProcessor class), it applies the **classification** (through EEGProcessor) and lastly the data is **sent** through the WS in order to be displaced at the UI.
+ - Each 0.1 s it gathers the **window** of the signal (through CytonEEG class), then it **preprocess** the signal (through EEGProcessor class), it applies the **classification** (through EEGProcessor) and lastly the data is **sent** through the WS in order to be displayed at the UI.
 
  - It splits the discrimination upon 0.5 Hz of difference to avoid missclassifications:
  ```python
@@ -156,13 +156,14 @@ sys.stdout = _Tee(sys.stdout, _log)
         return len(self.trial_timestamps) > FS * 2
  ```
  - This class returns the **highest correlation value** in comparison with the other 3 values from the other cells,
- it returns the **frequency** associated to that winner value, a **boolean** based on the **correct classification**
+ it returns the **frequency** associated to that **winner value**, a **boolean** based on the **correct classification**
  and **all the correlations** obtained from that **iteration**.
 
  ## Run Blocks
- Receives the ***raw EEG data per session**, calculates the **times of signal processing per iteration**, **classifies** the data and **calculates the accuracy** to send it through the WS. 
+ Receives the ***raw EEG data per session**, calculates the **times of signal processing latency per iteration**, **classifies** the data 
+ and **calculates the accuracy** to send it through the WS. 
 
- Initially it waits for 4s of buffer to be full:
+ Initially it waits for 4s of the buffer to be full:
  ```python
  raw_eeg, raw_ts = await source.get_window()  # 4s of EEG
 ```
@@ -174,35 +175,39 @@ sys.stdout = _Tee(sys.stdout, _log)
         recorder.write_chunk(new_eeg, new_ts)
     recorder.stop()
  ```
- Some of the **results** calculated at each step of this function are **shown at the server console** (i.e.✅CORRECT,
- ❌INCORRECT, Result, Time elapsed and Accuracy) and others are **sent to the frontend through the WebSocket** (i.e. cell_id, emoji, label, correlation, detected_freq, ...).
+ Some of the **results** calculated at each step of this function are **shown at the server console** (i.e.✅CORRECT, ❌INCORRECT, 
+ Result, Time elapsed and Accuracy) and others are **sent to the frontend through the WebSocket** (i.e. cell_id, emoji, label, 
+ correlation, detected_freq, ...).
 
 ---
 
- # Eegsource.py 
+# Eegsource.py 
  
- Cyton acquisition interface (real board or synthetic).
- The EEG signal source is placed here. It contains the **USE_SYNTHETIC_BOARD == True** (fakes the signal) and the **USE_SYNTHETIC_BOARD == False** (real hardware).
- Then the `server.py` instances one or the other depending on the `config.MODE`. 
+Cyton acquisition interface (real board or synthetic).
+The EEG signal source is taken here. It contains the **USE_SYNTHETIC_BOARD == True** (fakes the signal) and the 
+**USE_SYNTHETIC_BOARD == False** (real hardware).
+Then the `server.py` instances one or the other depending on the `config.MODE`. 
 
- This module gathers:
- - **CytonEEG()** class: it is the OpenBCI Cyton board / Brainflow synthetic board interface.
- - **get_window(self)**: returns the last WINDOW (1000) samples as (eeg, timestamps) without deleting them. If the buffer is not full it waits for the missing samples to always classify with a complete window:
+This module gathers:
+- **CytonEEG()** class: it contains the OpenBCI Cyton board / Brainflow synthetic board interface.
+- **get_window(self)**: returns the last WINDOW (1000) samples as (eeg, timestamps) without deleting them. If the buffer is not full
+  it waits for the missing samples to always classify with a complete window:
  ```python
  if n < WINDOW:
             missing_sec = (WINDOW - n) / FS
             await asyncio.sleep(missing_sec + 0.1)
             data = self.board.get_current_board_data(WINDOW)
 ```
- - **get_new_samples(self)**: it drains the Brainflow buffer and returns directly new (eeg, timestamps) data empting the buffer to paste it at the generated recording file.  
+ - **get_new_samples(self)**: it drains the Brainflow buffer and returns directly new (eeg, timestamps) data empting/releasing the buffer
+   to paste it at the generated `.txt` recording file.  
 
  ---
 
  # Preprocessing.py
 
  Includes SSVEP preprocessing and CCA classification.
- - Entry eeg data is gathered as a 2D array of shape `(N_CHANNELS, WINDOW) == (8, 1000)`
- - Preprocesses the gathered signals by using **Bandpass**, **Notch** and **CAR**
+ - Entry eeg data is gathered as a 2D array of shape `(N_CHANNELS, WINDOW) == (8, 1000)`.
+ - Preprocesses the gathered signals by using **Bandpass**, **Notch** and **CAR**.
  - Processes the **CCA reference comparison signals** built from CCA_HARMONICS.
  - Classifies the entry data against the reference signals built.
 
@@ -223,7 +228,7 @@ sys.stdout = _Tee(sys.stdout, _log)
 
  - **def build_notch_comb(fundamental=NOTCH_FUND, n_harmonics=NOTCH_NH, Q=NOTCH_Q)**:
     - It implements Notch comb at fundamental freq (50 Hz) and its harmonics (50 / 100 / 150 Hz).
-    - It erases the power line interference. 
+    - It erases the power line interference (PLI). 
 
  This module also includes:
  - **EEGProcessor()**: it integrates the preprocessing and classification pipeline.
@@ -253,7 +258,7 @@ sys.stdout = _Tee(sys.stdout, _log)
       return eeg
       ```
       - Common Average Reference substracts the spatial average from each channel across their samples.
-      - It reduces the common artifacts to all the electrodes (movement, EMG).
+      - It reduces the common artifacts to all the electrodes (movements like EMG).
       - eeg is an ndarray: `(4, 1000)`
       ```python
       def apply_car(self, eeg_data):
@@ -263,11 +268,12 @@ sys.stdout = _Tee(sys.stdout, _log)
  
  2. **CCA** 
       - It is the SSVEP Classifier based on Canonical Correlation Analysis (CCA).
-      - For each candidate frequency, it is built a sinusoidal reference signal with N harmonics and it is calculated the first canonical correlation between the EEG window and reference. 
+      - For each candidate frequency, it is built a sinusoidal reference signal with N harmonics and it is calculated the first canonical
+        correlation between the EEG window and reference. 
       - The frequency with major correlation will be the prediction.
 
    - **generate_references(self, frequency, n_samples)**:
-    - Builds the sinusoidal reference matrix for one frequency.
+    - Builds the sinusoidal reference matrix for one candidate frequency.
     - Includes `CCA_HARMONICS` list to combine them with sines and cosines per harmonic.
     - This function is the bank of reference generated signals.
     - It returns an array of shape (n_samples, 2*len(CCA_HARMONICS)).
@@ -295,12 +301,13 @@ sys.stdout = _Tee(sys.stdout, _log)
 
 # Recorder.py
 
- It is the raw EEG recorder that registers the entry signals like the OpenBCI GUI .txt format.
- Metadata is quite similar in order to analyse porduced signal at Jupyter Notebooks.
+ It is the raw EEG recorder that registers the entry signals like the ***OpenBCI GUI .txt format**.
+ Metadata is quite similar in order to later analyse processed signals at Jupyter Notebooks (see docs).
  Files are saved at the generated folder `RECORD_DIR == recordings`. 
 
  This module contains:
- - **EEGRecorder()**: this class is a thread-safe locked to avoid overlapping different tasks (i.e. star, stop, write, ...).This recorder writes like OpenBCI GUI .txt files, following the GUI header:
+ - **EEGRecorder()**: this class is a thread-safe locked to avoid overlapping different tasks (i.e. star, stop, write, ...).
+ - This recorder writes like OpenBCI GUI .txt files, following the GUI header:
    ```python
     _COLUMN_HEADER = (
         "Sample Index, EXG Channel 0, EXG Channel 1, EXG Channel 2, "
@@ -314,5 +321,7 @@ sys.stdout = _Tee(sys.stdout, _log)
    ```
  - **start(self, label="bci_session")**: opens a new file and writes the header.
  - **stop(self)**: closes the file and ends the recording.
- - **write_chunk(self, eeg_uv, timestamps, accel=None)**: writes a chunk of EEG samples expected in microvolts to the open file.It uses certain parameters (1-255 sampling indexes, fixed unused values likes zeros or 192, timestamp in java format, ...), similar to Java due to the OpenBCI GUI been linked to the Processing software to generate the recording files.
+ - **write_chunk(self, eeg_uv, timestamps, accel=None)**: writes a chunk of EEG samples expected in microvolts to the open file.
+   It uses certain parameters (1-255 sampling indexes, fixed unused values likes zeros or 192, timestamp in java format, ...), similar to Java
+   due to the Processing software linked to OpenBCI GUI to generate the recording files.
  - **_to_java_sci**: modifies the Java exponent format (E9 instead of E+09) in order to mimic the .txt byte-compatible to the OpenBCI GUI.
