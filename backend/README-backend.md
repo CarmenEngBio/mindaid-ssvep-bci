@@ -239,32 +239,32 @@ This module gathers:
       - Gathers the full pipeline: bandpass + notch comb + channel selection and CAR.
       - It returns the eeg data `(len(USED_CHANNELS), WINDOW) == (4, 1000)` filtered to classify it afterwards.
 
-      ```python
-      # 1. Double Butterworth bandpass
-      eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # zero phase forward-backward filter to provide stability
-      eeg = sosfiltfilt(_SOS_BP, eeg, axis=1)
+     ```python
+     # 1. Double Butterworth bandpass
+     eeg = sosfiltfilt(_SOS_BP, eeg_data, axis=1) # zero phase forward-backward filter to provide stability
+     eeg = sosfiltfilt(_SOS_BP, eeg, axis=1)
 
-      # 2. Notch comb (50 / 100 / 150 Hz)
-      for sos_n in _SOS_NOTCH:
-         eeg = sosfiltfilt(sos_n, eeg, axis=1)
+     # 2. Notch comb (50 / 100 / 150 Hz)
+     for sos_n in _SOS_NOTCH:
+        eeg = sosfiltfilt(sos_n, eeg, axis=1)
 
-      # 3. Selection of occipital and parietal channels
-      eeg = eeg[self.used_channels, :] # (4, 1000)
+     # 3. Selection of occipital and parietal channels
+     eeg = eeg[self.used_channels, :] # (4, 1000)
 
-      # 4. Common Average Reference
-      if APPLY_CAR:
-         eeg = self.apply_car(eeg)
-        
-      return eeg
-      ```
+     # 4. Common Average Reference
+     if APPLY_CAR:
+        eeg = self.apply_car(eeg)
+       
+     return eeg
+     ```
       - Common Average Reference substracts the spatial average from each channel across their samples.
       - It reduces the common artifacts to all the electrodes (movements like EMG).
       - eeg is an ndarray: `(4, 1000)`
-      ```python
-      def apply_car(self, eeg_data):
-        mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
-        return eeg_data - mean_ref
-      ```
+     ```python
+     def apply_car(self, eeg_data):
+       mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
+       return eeg_data - mean_ref
+     ```
  
  2. **CCA** 
       - It is the SSVEP Classifier based on Canonical Correlation Analysis (CCA).
