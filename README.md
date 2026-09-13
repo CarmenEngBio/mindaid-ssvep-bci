@@ -77,7 +77,7 @@ When the detected stimulus corresponds to the target during the recording, the s
 
 ---
 
-## Frequencies associated per channel 
+## Frequencies associated per cell 
 
 | Key | Hz  |
 |-------|-----|
