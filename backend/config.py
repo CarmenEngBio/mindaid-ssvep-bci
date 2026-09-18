@@ -2,11 +2,11 @@
 
 SERIAL_PORT ="COM5" 
 
-#USE_SYNTHETIC_BOARD = True
-USE_SYNTHETIC_BOARD = False
+USE_SYNTHETIC_BOARD = True
+#USE_SYNTHETIC_BOARD = False
 
-#MODE = "DEMO"
-MODE = "HARDWARE"
+MODE = "DEMO"
+#MODE = "HARDWARE"
 
 if MODE not in ("HARDWARE", "DEMO"):
     raise ValueError(f"Invalid MODE {MODE!r}: expected 'HARDWARE' or 'DEMO'")
