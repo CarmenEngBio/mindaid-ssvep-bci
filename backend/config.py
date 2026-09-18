@@ -5,8 +5,8 @@ SERIAL_PORT ="COM5"
 USE_SYNTHETIC_BOARD = True
 #USE_SYNTHETIC_BOARD = False
 
-MODE = "DEMO"
-#MODE = "HARDWARE"
+#MODE = "DEMO"
+MODE = "HARDWARE"
 
 if MODE not in ("HARDWARE", "DEMO"):
     raise ValueError(f"Invalid MODE {MODE!r}: expected 'HARDWARE' or 'DEMO'")
@@ -21,7 +21,7 @@ CHANNEL_NAMES = ["P7", "P8", "O1", "O2"]
 WINDOW_SEC = 4 
 WINDOW     = FS * WINDOW_SEC
 
-TARGET_CELL = 2
+TARGET_CELL = 1
 
 CELLS = {
     1: {"emoji": "🍽️",  "label": "Eat", "freq": 8.57},
